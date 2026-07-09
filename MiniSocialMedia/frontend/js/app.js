@@ -226,7 +226,7 @@ function parseErrors(data) {
  */
 async function register(username, email, password, firstName, lastName) {
   showLoading();
-  const res = await apiRequest('/accounts/register/', 'POST', {
+  const res = await apiRequest('/api/accounts/register/', 'POST', {
     username,
     email,
     password,
@@ -275,7 +275,7 @@ function logout() {
 /** Load all posts from the API and render them into the feed. */
 async function loadPosts() {
   showLoading();
-  const res = await apiRequest('/posts/');
+  const res = await apiRequest('/api/posts/');
   hideLoading();
 
   if (res.ok) {
