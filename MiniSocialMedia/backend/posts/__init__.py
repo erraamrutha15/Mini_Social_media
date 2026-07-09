@@ -1,0 +1,1 @@
+"""posts application package initializer."""
