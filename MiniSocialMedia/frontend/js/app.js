@@ -4,7 +4,7 @@
    ============================================ */
 
 // ── API Base URL ──
-const API_BASE = 'http://127.0.0.1:8000/api';
+const API_BASE = 'https://minisocialmedia-production.up.railway.app';
 
 // ============================================
 // SECTION 1: Auth Utility Functions
