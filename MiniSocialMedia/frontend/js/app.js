@@ -88,7 +88,7 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
     return {
       ok: false,
       status: 0,
-      data: { detail: 'Network error. Make sure the Django server is running at http://127.0.0.1:8000' }
+      data: { detail: 'Network error. Make sure the Django server is running at https://minisocialmedia-production.up.railway.app' }
     };
   }
 }
