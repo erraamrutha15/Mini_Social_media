@@ -88,7 +88,7 @@ async function apiRequest(endpoint, method = 'GET', body = null) {
     return {
       ok: false,
       status: 0,
-      data: { detail: 'Network error. Make sure the Django server is running at https://minisocialmedia-production.up.railway.app' }
+      data: { detail: 'Network error. Make sure the Django server is running.' }
     };
   }
 }
@@ -250,7 +250,7 @@ async function register(username, email, password, firstName, lastName) {
  */
 async function login(username, password) {
   showLoading();
-  const res = await apiRequest('/accounts/login/', 'POST', { username, password });
+  const res = await apiRequest('/api/accounts/login/', 'POST', { username, password });
   hideLoading();
 
   if (res.ok) {
@@ -315,7 +315,7 @@ async function createPost(content, mediaFile = null) {
     if (token) headers['Authorization'] = `Token ${token}`;
 
     try {
-      const response = await fetch(`${API_BASE}/posts/`, {
+      const response = await fetch(`${API_BASE}/api/posts/`, {
         method: 'POST',
         headers,
         body: formData
@@ -327,7 +327,7 @@ async function createPost(content, mediaFile = null) {
     }
   } else {
     // Normal JSON request
-    res = await apiRequest('/posts/', 'POST', { content });
+    res = await apiRequest('/api/posts/', 'POST', { content });
   }
   
   hideLoading();
@@ -352,7 +352,7 @@ async function deletePost(postId) {
   if (!confirm('Are you sure you want to delete this post?')) return;
 
   showLoading();
-  const res = await apiRequest(`/posts/${postId}/`, 'DELETE');
+  const res = await apiRequest(`/api/posts/${postId}/`, 'DELETE');
   hideLoading();
 
   if (res.ok) {
@@ -368,7 +368,7 @@ async function deletePost(postId) {
  * @param {number} postId
  */
 async function likePost(postId) {
-  const res = await apiRequest(`/posts/${postId}/like/`, 'POST');
+  const res = await apiRequest(`/api/posts/${postId}/like/`, 'POST');
   if (res.ok) {
     loadPosts();
   } else {
@@ -381,7 +381,7 @@ async function likePost(postId) {
  * @param {number} postId
  */
 async function unlikePost(postId) {
-  const res = await apiRequest(`/posts/${postId}/unlike/`, 'POST');
+  const res = await apiRequest(`/api/posts/${postId}/unlike/`, 'POST');
   if (res.ok) {
     loadPosts();
   } else {
@@ -436,7 +436,7 @@ async function addComment(postId, content) {
     return;
   }
 
-  const res = await apiRequest(`/posts/${postId}/comments/`, 'POST', { content });
+  const res = await apiRequest(`/api/posts/${postId}/comments/`, 'POST', { content });
 
   if (res.ok) {
     showToast('Comment added! 💬');
@@ -471,7 +471,7 @@ function handleAddComment(e, postId) {
  */
 async function loadProfile(username) {
   showLoading();
-  const res = await apiRequest(`/accounts/profile/${username}/`);
+  const res = await apiRequest(`/api/accounts/profile/${username}/`);
   hideLoading();
 
   if (res.ok) {
@@ -502,7 +502,7 @@ async function loadProfile(username) {
 async function updateProfile(bio, firstName, lastName) {
   const username = getUsername();
   showLoading();
-  const res = await apiRequest(`/accounts/profile/${username}/`, 'PUT', {
+  const res = await apiRequest(`/api/accounts/profile/${username}/`, 'PUT', {
     bio,
     first_name: firstName,
     last_name: lastName,
@@ -522,7 +522,7 @@ async function updateProfile(bio, firstName, lastName) {
  * @param {number} userId
  */
 async function followUser(userId) {
-  const res = await apiRequest('/accounts/follow/', 'POST', { following_id: userId });
+  const res = await apiRequest('/api/accounts/follow/', 'POST', { following_id: userId });
   if (res.ok) {
     showToast('Followed! 🤝');
     // Reload the profile page to update the state
@@ -539,7 +539,7 @@ async function followUser(userId) {
  * @param {number} userId
  */
 async function unfollowUser(userId) {
-  const res = await apiRequest('/accounts/unfollow/', 'POST', { following_id: userId });
+  const res = await apiRequest('/api/accounts/unfollow/', 'POST', { following_id: userId });
   if (res.ok) {
     showToast('Unfollowed.');
     const urlParams = new URLSearchParams(window.location.search);
@@ -552,7 +552,7 @@ async function unfollowUser(userId) {
 
 /** Load the list of all users for the "Discover" sidebar. */
 async function loadUsers() {
-  const res = await apiRequest('/accounts/users/');
+  const res = await apiRequest('/api/accounts/users/');
   if (res.ok) {
     renderUsers(res.data);
   }
